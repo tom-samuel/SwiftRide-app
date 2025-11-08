@@ -1,3 +1,4 @@
+// SwiftRide Premium JavaScript
 class SwiftRideApp {
     constructor() {
         this.init();
@@ -7,6 +8,7 @@ class SwiftRideApp {
         this.setupNavbar();
         this.setupAnimations();
         this.setupEventListeners();
+        this.setupMobileMenu();
         console.log('🚗 SwiftRide Premium initialized');
     }
 
@@ -69,6 +71,70 @@ class SwiftRideApp {
         }
     }
 
+    // Mobile Menu Functionality
+    setupMobileMenu() {
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navbar = document.querySelector('.navbar');
+        
+        if (mobileMenuBtn) {
+            // Create mobile menu if it doesn't exist
+            if (!document.querySelector('.mobile-menu')) {
+                this.createMobileMenu();
+            }
+            
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            mobileMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                mobileMenu.classList.toggle('active');
+                mobileMenuBtn.classList.toggle('active');
+                
+                // Update hamburger icon
+                const icon = mobileMenuBtn.querySelector('i');
+                if (mobileMenu.classList.contains('active')) {
+                    icon.className = 'fas fa-times';
+                } else {
+                    icon.className = 'fas fa-bars';
+                }
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!navbar.contains(e.target) && mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                    mobileMenuBtn.querySelector('i').className = 'fas fa-bars';
+                }
+            });
+            
+            // Close menu on link click
+            const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    mobileMenuBtn.querySelector('i').className = 'fas fa-bars';
+                });
+            });
+        }
+    }
+    
+    createMobileMenu() {
+        const mobileMenu = document.createElement('div');
+        mobileMenu.className = 'mobile-menu';
+        mobileMenu.innerHTML = `
+            <div class="mobile-nav-links">
+                <a href="#features" class="mobile-nav-link">Features</a>
+                <a href="#how-it-works" class="mobile-nav-link">How It Works</a>
+                <a href="#safety" class="mobile-nav-link">Safety</a>
+                <a href="#" class="mobile-nav-link">Drive With Us</a>
+            </div>
+            <div class="mobile-nav-actions">
+                <a href="login.html" class="btn-secondary">Sign In</a>
+                <a href="signup.html" class="btn-primary">Get Started</a>
+            </div>
+        `;
+        document.body.appendChild(mobileMenu);
+    }
+
     showDownloadModal() {
         this.showNotification('📱 Download starting soon...', 'success');
     }
@@ -116,10 +182,12 @@ class SwiftRideApp {
     }
 }
 
+// Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new SwiftRideApp();
 });
 
+// Smooth scrolling for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();

@@ -1025,3 +1025,89 @@ body {
     height: 350px;
   }
 }
+
+/* Non-interactive phone demo */
+.app-demo {
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+}
+
+.demo-header {
+    margin-bottom: 20px;
+}
+
+.demo-location {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--white);
+}
+
+.demo-map {
+    flex: 1;
+    background: linear-gradient(135deg, #2D3748, #4A5568);
+    border-radius: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.demo-car-moving {
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    font-size: 2rem;
+    color: var(--primary);
+    animation: driveDemo 4s ease-in-out infinite;
+}
+
+.demo-ride-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.demo-option {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--white);
+}
+
+.demo-option.active {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.demo-book-btn {
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    color: var(--white);
+    border-radius: 15px;
+    padding: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+@keyframes driveDemo {
+    0%, 100% { transform: translateX(0) translateY(0); }
+    25% { transform: translateX(20px) translateY(-5px); }
+    50% { transform: translateX(40px) translateY(0); }
+    75% { transform: translateX(20px) translateY(5px); }
+}

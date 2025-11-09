@@ -70,6 +70,27 @@ class SwiftRideApp {
                 this.bookRide();
             });
         }
+
+        // App access buttons
+        const appButtons = document.querySelectorAll('.btn-passenger, .btn-driver, .btn-admin');
+        appButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const appType = button.classList.contains('btn-passenger') ? 'Passenger' : 
+                               button.classList.contains('btn-driver') ? 'Driver' : 'Admin';
+                this.showNotification(`🚀 Opening ${appType} App...`, 'success');
+                // In real app, this would navigate to the respective dashboard
+                setTimeout(() => {
+                    if (appType === 'Passenger') {
+                        window.location.href = 'passenger-dashboard.html';
+                    } else if (appType === 'Driver') {
+                        window.location.href = 'driver-login.html';
+                    } else {
+                        window.location.href = 'admin-login.html';
+                    }
+                }, 1000);
+            });
+        });
     }
 
     // Enhanced Mobile Menu Functionality
@@ -122,7 +143,7 @@ class SwiftRideApp {
                     <i class="fas fa-shield-alt"></i>
                     Safety
                 </a>
-                <a href="#drive" class="mobile-nav-link">
+                <a href="driver-login.html" class="mobile-nav-link">
                     <i class="fas fa-car"></i>
                     Drive With Us
                 </a>
@@ -248,3 +269,6 @@ class SwiftRideApp {
 document.addEventListener('DOMContentLoaded', () => {
     new SwiftRideApp();
 });
+
+// Make app globally accessible
+window.swiftRideApp = new SwiftRideApp();

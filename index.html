@@ -5,42 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SwiftRide - Premium Ride-Hailing Experience</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/animations.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-        <!-- Premium Navigation - Single Consistent Version -->
-    <nav class="navbar glass-nav">
+    <!-- Enhanced Navigation -->
+    <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo">
+            <a href="#" class="nav-logo">
                 <div class="logo-icon">
                     <i class="fas fa-bolt"></i>
                 </div>
                 <span class="logo-text">SwiftRide</span>
-            </div>
+            </a>
             
+            <!-- Desktop Navigation -->
             <div class="nav-content">
                 <div class="nav-links">
                     <a href="#features" class="nav-link">Features</a>
                     <a href="#how-it-works" class="nav-link">How It Works</a>
                     <a href="#safety" class="nav-link">Safety</a>
-                    <a href="#" class="nav-link">Drive With Us</a>
+                    <a href="#drive" class="nav-link">Drive With Us</a>
                 </div>
                 
+                <!-- SINGLE SET OF BUTTONS - No duplicates -->
                 <div class="nav-actions">
                     <a href="login.html" class="btn-secondary">Login</a>
                     <a href="signup.html" class="btn-primary">Sign Up</a>
                 </div>
             </div>
 
-            <!-- Single Hamburger Menu -->
-            <div class="mobile-menu-btn">
+            <!-- Single Mobile Menu Button -->
+            <button class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
-            </div>
+            </button>
         </div>
     </nav>
 
+    <!-- Mobile Menu (will be inserted by JavaScript) -->
+    
     <!-- Enhanced Hero Section -->
     <section class="hero-section">
         <div class="hero-background">
@@ -62,7 +65,8 @@
         
         <div class="hero-container">
             <div class="hero-content">
-                <div class="badge premium-badge">
+                <!-- Premium Badge - Fixed for mobile -->
+                <div class="premium-badge">
                     <i class="fas fa-crown"></i>
                     Premium Experience
                 </div>

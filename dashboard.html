@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SwiftRide</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="app-logo">
+                        <i class="fas fa-bolt"></i>
+                        <span>SwiftRide</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="user-menu">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span class="user-name">Demo User</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main class="dashboard-main">
+        <div class="container">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <h1 class="welcome-title">Good morning, Demo! 👋</h1>
+                <p class="welcome-subtitle">Where would you like to go today?</p>
+            </section>
+
+            <!-- Ride Booking Card -->
+            <section class="booking-card">
+                <div class="location-inputs">
+                    <!-- Pickup Location -->
+                    <div class="location-field pickup">
+                        <div class="location-marker">
+                            <div class="marker-dot"></div>
+                            <div class="marker-line"></div>
+                        </div>
+                        <div class="location-content">
+                            <label class="location-label">Pickup Location</label>
+                            <input type="text" class="location-input" placeholder="Current location" value="Your current location">
+                        </div>
+                    </div>
+
+                    <!-- Destination Location -->
+                    <div class="location-field destination">
+                        <div class="location-marker">
+                            <div class="marker-dot"></div>
+                        </div>
+                        <div class="location-content">
+                            <label class="location-label">Destination</label>
+                            <input type="text" class="location-input" placeholder="Where to?" value="Times Square, NYC">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ride Options -->
+                <div class="ride-options-grid">
+                    <div class="ride-option active" data-type="swift">
+                        <div class="ride-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <div class="ride-info">
+                            <div class="ride-name">Swift</div>
+                            <div class="ride-price">$12.50</div>
+                            <div class="ride-time">2 min away</div>
+                        </div>
+                    </div>
+
+                    <div class="ride-option" data-type="comfort">
+                        <div class="ride-icon">
+                            <i class="fas fa-car-side"></i>
+                        </div>
+                        <div class="ride-info">
+                            <div class="ride-name">Comfort</div>
+                            <div class="ride-price">$18.75</div>
+                            <div class="ride-time">3 min away</div>
+                        </div>
+                    </div>
+
+                    <div class="ride-option" data-type="premium">
+                        <div class="ride-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="ride-info">
+                            <div class="ride-name">Premium</div>
+                            <div class="ride-price">$24.99</div>
+                            <div class="ride-time">5 min away</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book Ride Button -->
+                <button class="book-ride-btn large">
+                    <i class="fas fa-bolt"></i>
+                    Confirm Swift Ride
+                </button>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h2 class="section-title">Quick Actions</h2>
+                <div class="actions-grid">
+                    <div class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="action-text">Ride History</div>
+                    </div>
+                    <div class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="action-text">Favorites</div>
+                    </div>
+                    <div class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="action-text">Promos</div>
+                    </div>
+                    <div class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div class="action-text">Support</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-receipt"></i>
+            <span>Trips</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

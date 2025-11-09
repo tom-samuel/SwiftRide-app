@@ -381,3 +381,17 @@
         padding: 1rem;
     }
 }
+
+/* ADD ALL THE NEW CSS RULES TO THE BOTTOM OF YOUR EXISTING map.css FILE */
+
+/* Location Search Styles */
+.location-search-container {
+    position: relative;
+}
+
+.search-results-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* ... [ALL THE NEW CSS I SENT EARLIER] ... */

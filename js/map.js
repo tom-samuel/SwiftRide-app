@@ -318,3 +318,68 @@ document.addEventListener('DOMContentLoaded', () => {
     swiftRideMap = new SwiftRideMap();
     window.swiftRideMap = swiftRideMap; // Make it globally accessible
 });
+
+// Add to SwiftRideMap class in map.js
+
+// Enhanced location handling methods
+setPickupLocationFromSearch(location) {
+    this.setPickupLocation(location.coordinates);
+    this.showNotification(`📍 Pickup set to ${location.name}`, 'success');
+}
+
+setDestinationLocationFromSearch(location) {
+    this.setDestinationLocation(location.coordinates);
+    this.showNotification(`🎯 Destination set to ${location.name}`, 'success');
+    
+    // Auto-calculate route if pickup is also set
+    if (this.pickupMarker) {
+        setTimeout(() => {
+            this.calculateRoute();
+        }, 500);
+    }
+}
+
+// Enhanced route calculation with better estimates
+calculateRoute() {
+    if (this.pickupMarker && this.destinationMarker) {
+        const pickupLatLng = this.pickupMarker.getLatLng();
+        const destLatLng = this.destinationMarker.getLatLng();
+        
+        // Draw route
+        this.drawRoute(pickupLatLng, destLatLng);
+        
+        // Calculate improved estimates
+        const distance = this.calculateDistance(pickupLatLng, destLatLng);
+        const duration = this.calculateDuration(distance);
+        const fare = this.calculateFare(distance);
+        
+        this.showEnhancedEstimate(distance, duration, fare);
+        
+        // Update progress
+        if (window.updateProgress) {
+            window.updateProgress(2);
+        }
+    }
+}
+
+calculateDuration(distance) {
+    // Estimate duration based on distance and average speed (30 km/h in city)
+    const averageSpeed = 30; // km/h
+    const baseTime = 3; // minutes base time
+    const travelTime = (distance / averageSpeed) * 60; // Convert to minutes
+    return Math.round(baseTime + travelTime);
+}
+
+showEnhancedEstimate(distance, duration, fare) {
+    const estimateCard = document.getElementById('rideEstimate');
+    if (estimateCard) {
+        estimateCard.querySelector('.estimate-price').textContent = `$${fare}`;
+        estimateCard.querySelectorAll('.estimate-detail')[0].innerHTML = 
+            `<i class="fas fa-clock"></i><span>${duration} min</span>`;
+        estimateCard.querySelectorAll('.estimate-detail')[1].innerHTML = 
+            `<i class="fas fa-road"></i><span>${distance.toFixed(1)} km</span>`;
+        estimateCard.style.display = 'block';
+    }
+    
+    this.showNotification(`💰 Estimated: $${fare} | ⏱️ ${duration} min | 🛣️ ${distance.toFixed(1)} km`, 'success');
+}

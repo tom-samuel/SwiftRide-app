@@ -59,25 +59,53 @@
                 </div>
             </section>
 
+            <!-- Booking Progress -->
+            <div class="booking-progress">
+                <div class="progress-step active">
+                    <div class="step-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="step-label">Set Locations</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="step-label">Choose Ride</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="step-label">Payment</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-label">Confirm</div>
+                </div>
+            </div>
+
             <!-- Quick Actions -->
             <div class="quick-actions">
                 <h3>Quick Actions</h3>
                 <div class="action-grid">
-                    <button class="action-btn" onclick="swiftRideMap.showNotification('📍 Setting current location as pickup...', 'info')">
+                    <button class="action-btn" onclick="setCurrentLocation('pickup')">
                         <i class="fas fa-map-marker-alt"></i>
-                        Set Pickup Here
+                        Current Location
                     </button>
-                    <button class="action-btn" onclick="swiftRideMap.showNotification('🎯 Ready to set destination - click on map!', 'info')">
+                    <button class="action-btn" onclick="swiftRideMap.showNotification('🎯 Ready to set destination - click on map or use search!', 'info')">
                         <i class="fas fa-flag-checkered"></i>
                         Set Destination
                     </button>
-                    <button class="action-btn" onclick="swiftRideMap.showNotification('🚗 Finding nearest drivers...', 'info')">
-                        <i class="fas fa-car"></i>
-                        Find Drivers
-                    </button>
-                    <button class="action-btn" onclick="swiftRideMap.showNotification('💰 Calculating fare estimate...', 'info')">
+                    <button class="action-btn" onclick="estimateRideFare()">
                         <i class="fas fa-dollar-sign"></i>
                         Estimate Fare
+                    </button>
+                    <button class="action-btn" onclick="swiftRideMap.clearRoute()">
+                        <i class="fas fa-redo"></i>
+                        Clear Route
                     </button>
                 </div>
             </div>
@@ -87,14 +115,44 @@
             <!-- Ride Booking Card -->
             <div class="booking-card">
                 <h3>Book Your Ride</h3>
+                
+                <!-- Location Inputs -->
                 <div class="location-inputs">
-                    <div class="input-group">
+                    <div class="input-group location-search-container">
                         <label>Pickup Location</label>
-                        <input type="text" id="pickupInput" placeholder="Current location or enter address">
+                        <div class="input-with-button">
+                            <input type="text" id="pickupInput" placeholder="Current location or enter address">
+                            <button class="current-location-btn" onclick="setCurrentLocation('pickup')">
+                                <i class="fas fa-location-arrow"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="input-group">
+                    <div class="input-group location-search-container">
                         <label>Destination</label>
-                        <input type="text" id="destinationInput" placeholder="Where to?">
+                        <div class="input-with-button">
+                            <input type="text" id="destinationInput" placeholder="Where to?">
+                            <button class="current-location-btn" onclick="swiftRideMap.showNotification('📍 Select destination on map or search above', 'info')">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ride Estimate (Initially Hidden) -->
+                <div id="rideEstimate" class="ride-estimate-card" style="display: none;">
+                    <div class="estimate-header">
+                        <h4>Estimated Fare</h4>
+                        <div class="estimate-price">$15.50</div>
+                    </div>
+                    <div class="estimate-details">
+                        <div class="estimate-detail">
+                            <i class="fas fa-clock"></i>
+                            <span>15 min</span>
+                        </div>
+                        <div class="estimate-detail">
+                            <i class="fas fa-road"></i>
+                            <span>5.2 km</span>
+                        </div>
                     </div>
                 </div>
 
@@ -106,13 +164,23 @@
                         <div class="ride-info">
                             <strong>Swift</strong>
                             <span>2 min • $12.50</span>
+                            <div class="ride-features">
+                                <span class="ride-feature">4 seats</span>
+                                <span class="ride-feature">AC</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="ride-option" data-type="comfort" data-price="18.75">
+                    <div class="ride-option featured" data-type="comfort" data-price="18.75">
+                        <div class="featured-badge">Popular</div>
                         <i class="fas fa-car-side"></i>
                         <div class="ride-info">
                             <strong>Comfort</strong>
                             <span>3 min • $18.75</span>
+                            <div class="ride-features">
+                                <span class="ride-feature">4 seats</span>
+                                <span class="ride-feature">Extra Space</span>
+                                <span class="ride-feature">AC</span>
+                            </div>
                         </div>
                     </div>
                     <div class="ride-option" data-type="premium" data-price="24.99">
@@ -120,59 +188,190 @@
                         <div class="ride-info">
                             <strong>Premium</strong>
                             <span>5 min • $24.99</span>
+                            <div class="ride-features">
+                                <span class="ride-feature">4 seats</span>
+                                <span class="ride-feature">Luxury</span>
+                                <span class="ride-feature">Priority</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Methods -->
+                <div class="payment-section">
+                    <h4>Payment Method</h4>
+                    <div class="payment-methods">
+                        <div class="payment-method active" data-method="card">
+                            <i class="fas fa-credit-card"></i>
+                            <div class="payment-name">Card</div>
+                        </div>
+                        <div class="payment-method" data-method="paypal">
+                            <i class="fab fa-paypal"></i>
+                            <div class="payment-name">PayPal</div>
+                        </div>
+                        <div class="payment-method" data-method="cash">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <div class="payment-name">Cash</div>
                         </div>
                     </div>
                 </div>
 
                 <button class="book-ride-btn" onclick="handleBookRide()">
                     <i class="fas fa-bolt"></i>
-                    Book Swift Ride
+                    Book Swift Ride - $12.50
                 </button>
             </div>
 
             <!-- Nearby Drivers -->
             <div class="drivers-card">
-                <h3>Nearby Drivers</h3>
+                <h3>Nearby Drivers <span class="driver-count">(8 available)</span></h3>
                 <div class="drivers-list">
-                    <div class="driver-item">
+                    <div class="driver-item" data-driver-id="1">
                         <div class="driver-avatar">D1</div>
                         <div class="driver-details">
-                            <div class="driver-name">Driver 1</div>
-                            <div class="driver-rating">⭐ 4.8</div>
-                            <div class="driver-distance">0.8 km away</div>
+                            <div class="driver-name">Michael Chen</div>
+                            <div class="driver-rating">⭐ 4.8 (128 rides)</div>
+                            <div class="driver-distance">0.8 km away • 2 min</div>
                         </div>
                     </div>
-                    <div class="driver-item">
+                    <div class="driver-item" data-driver-id="2">
                         <div class="driver-avatar">D2</div>
                         <div class="driver-details">
-                            <div class="driver-name">Driver 2</div>
-                            <div class="driver-rating">⭐ 4.9</div>
-                            <div class="driver-distance">1.2 km away</div>
+                            <div class="driver-name">Sarah Johnson</div>
+                            <div class="driver-rating">⭐ 4.9 (256 rides)</div>
+                            <div class="driver-distance">1.2 km away • 3 min</div>
                         </div>
                     </div>
-                    <!-- More drivers... -->
+                    <div class="driver-item" data-driver-id="3">
+                        <div class="driver-avatar">D3</div>
+                        <div class="driver-details">
+                            <div class="driver-name">David Martinez</div>
+                            <div class="driver-rating">⭐ 4.7 (89 rides)</div>
+                            <div class="driver-distance">0.5 km away • 1 min</div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Driver Matching Overlay -->
+    <div id="matchingOverlay" class="matching-overlay" style="display: none;">
+        <div class="matching-content">
+            <div class="matching-animation">
+                <div class="matching-dot"></div>
+                <div class="matching-dot"></div>
+                <div class="matching-dot"></div>
+            </div>
+            <h3>Finding you a driver...</h3>
+            <p>Matching you with the best available driver</p>
+            <button class="btn-secondary" onclick="cancelMatching()">Cancel</button>
         </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/app.js"></script>
     <script src="js/map.js"></script>
+    <script src="js/location-service.js"></script>
     <script>
+        // Enhanced booking functionality
         function handleBookRide() {
-            const selectedRide = document.querySelector('.ride-option.active');
-            const rideType = selectedRide ? selectedRide.dataset.type : 'swift';
-            const price = selectedRide ? selectedRide.dataset.price : '12.50';
+            const pickupInput = document.getElementById('pickupInput');
+            const destinationInput = document.getElementById('destinationInput');
             
-            swiftRideMap.showNotification(`🚗 Booking ${rideType} ride for $${price}...`, 'success');
+            if (!pickupInput.value || !destinationInput.value) {
+                swiftRideMap.showNotification('❌ Please set both pickup and destination locations', 'error');
+                return;
+            }
+
+            showMatchingOverlay();
             
+            // Simulate driver matching process
             setTimeout(() => {
-                swiftRideMap.showNotification(`✅ ${rideType} ride confirmed! Driver arriving in 2-3 minutes.`, 'success');
-            }, 2000);
+                const selectedDriver = Math.floor(Math.random() * 3) + 1;
+                confirmDriverMatch(selectedDriver);
+            }, 3000);
         }
 
-        // Add ride option selection
+        function showMatchingOverlay() {
+            document.getElementById('matchingOverlay').style.display = 'flex';
+        }
+
+        function hideMatchingOverlay() {
+            document.getElementById('matchingOverlay').style.display = 'none';
+        }
+
+        function cancelMatching() {
+            hideMatchingOverlay();
+            swiftRideMap.showNotification('❌ Ride request cancelled', 'info');
+        }
+
+        function confirmDriverMatch(driverId) {
+            hideMatchingOverlay();
+            const driver = document.querySelector(`[data-driver-id="${driverId}"]`);
+            const driverName = driver ? driver.querySelector('.driver-name').textContent : 'a driver';
+            
+            swiftRideMap.showNotification(`✅ ${driverName} accepted your ride! Arriving in 2-3 minutes.`, 'success');
+            
+            // Update progress
+            updateProgress(3);
+        }
+
+        function setCurrentLocation(type) {
+            if (navigator.geolocation) {
+                swiftRideMap.showNotification('📍 Getting your current location...', 'info');
+                
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        
+                        if (type === 'pickup') {
+                            document.getElementById('pickupInput').value = 'Current Location';
+                            swiftRideMap.setPickupLocation([lat, lng]);
+                        }
+                        
+                        swiftRideMap.showNotification('📍 Current location set!', 'success');
+                    },
+                    (error) => {
+                        swiftRideMap.showNotification('❌ Could not get your location. Please enable location services.', 'error');
+                    }
+                );
+            } else {
+                swiftRideMap.showNotification('❌ Geolocation is not supported by your browser', 'error');
+            }
+        }
+
+        function estimateRideFare() {
+            const pickupInput = document.getElementById('pickupInput');
+            const destinationInput = document.getElementById('destinationInput');
+            
+            if (!pickupInput.value || !destinationInput.value) {
+                swiftRideMap.showNotification('❌ Please set both locations to estimate fare', 'error');
+                return;
+            }
+
+            // Show estimate card with random fare
+            const estimateCard = document.getElementById('rideEstimate');
+            const randomFare = (12 + Math.random() * 15).toFixed(2);
+            estimateCard.querySelector('.estimate-price').textContent = `$${randomFare}`;
+            estimateCard.style.display = 'block';
+            
+            swiftRideMap.showNotification(`💰 Fare estimate: $${randomFare}`, 'success');
+            updateProgress(2);
+        }
+
+        function updateProgress(step) {
+            // Reset all steps
+            document.querySelectorAll('.progress-step').forEach((stepEl, index) => {
+                stepEl.classList.remove('active');
+                if (index < step) {
+                    stepEl.classList.add('active');
+                }
+            });
+        }
+
+        // Enhanced ride option selection
         document.querySelectorAll('.ride-option').forEach(option => {
             option.addEventListener('click', function() {
                 document.querySelectorAll('.ride-option').forEach(opt => opt.classList.remove('active'));
@@ -180,10 +379,66 @@
                 
                 const rideType = this.dataset.type;
                 const price = this.dataset.price;
-                document.querySelector('.book-ride-btn').innerHTML = 
-                    `<i class="fas fa-bolt"></i> Book ${rideType.charAt(0).toUpperCase() + rideType.slice(1)} Ride - $${price}`;
+                const button = document.querySelector('.book-ride-btn');
+                
+                button.innerHTML = `<i class="fas fa-bolt"></i> Book ${rideType.charAt(0).toUpperCase() + rideType.slice(1)} Ride - $${price}`;
+                updateProgress(2);
+            });
+        });
+
+        // Payment method selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function() {
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                this.classList.add('active');
+                updateProgress(3);
+            });
+        });
+
+        // Auto-estimate when both locations are set
+        let estimateTimeout;
+        const pickupInput = document.getElementById('pickupInput');
+        const destinationInput = document.getElementById('destinationInput');
+
+        [pickupInput, destinationInput].forEach(input => {
+            input.addEventListener('input', () => {
+                clearTimeout(estimateTimeout);
+                if (pickupInput.value && destinationInput.value) {
+                    estimateTimeout = setTimeout(estimateRideFare, 1000);
+                }
             });
         });
     </script>
+
+    <style>
+        .matching-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .matching-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-2xl);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .driver-count {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            font-weight: normal;
+        }
+    </style>
 </body>
 </html>
